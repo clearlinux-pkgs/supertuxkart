@@ -4,7 +4,7 @@
 #
 Name     : supertuxkart
 Version  : 0.9.2
-Release  : 1
+Release  : 2
 URL      : http://downloads.sourceforge.net/project/supertuxkart/SuperTuxKart/0.9.2/supertuxkart-0.9.2-src.tar.xz
 Source0  : http://downloads.sourceforge.net/project/supertuxkart/SuperTuxKart/0.9.2/supertuxkart-0.9.2-src.tar.xz
 Summary  : zlib compression library
@@ -63,6 +63,8 @@ popd
 rm -rf %{buildroot}
 pushd clr-build
 %make_install
+mkdir -p %{buildroot}/usr/lib64
+cp lib/angelscript/projects/cmake/libangelscript.so.2.30.2 %{buildroot}/usr/lib64
 popd
 
 %files
@@ -71,6 +73,7 @@ popd
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/supertuxkart
+/usr/lib64/libangelscript.so.2.30.2
 
 %files data
 %defattr(-,root,root,-)

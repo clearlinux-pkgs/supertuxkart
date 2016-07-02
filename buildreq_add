@@ -1,0 +1,12 @@
+# This file contains additional build requirements that did not get
+# picked up automatically. One name per line, no whitespace.
+libjpeg-turbo-dev
+mesa-dev
+openal-soft-dev
+zlib-dev
+libvorbis-dev
+pulseaudio-dev
+freetype-dev
+libogg-dev
+curl-dev
+libXrandr-dev

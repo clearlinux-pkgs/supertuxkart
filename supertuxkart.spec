@@ -4,7 +4,7 @@
 #
 Name     : supertuxkart
 Version  : 0.9.2
-Release  : 3
+Release  : 4
 URL      : http://downloads.sourceforge.net/project/supertuxkart/SuperTuxKart/0.9.2/supertuxkart-0.9.2-src.tar.xz
 Source0  : http://downloads.sourceforge.net/project/supertuxkart/SuperTuxKart/0.9.2/supertuxkart-0.9.2-src.tar.xz
 Summary  : zlib compression library

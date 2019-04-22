@@ -1,5 +1,5 @@
 PKG_NAME := supertuxkart
-URL := http://downloads.sourceforge.net/project/supertuxkart/SuperTuxKart/0.9.2/supertuxkart-0.9.2-src.tar.xz
-ARCHIVES :=
+URL = https://ayera.dl.sourceforge.net/project/supertuxkart/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
+ARCHIVES = 
 
 include ../common/Makefile.common

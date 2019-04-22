@@ -4,7 +4,7 @@
 #
 Name     : supertuxkart
 Version  : 1.0
-Release  : 5
+Release  : 6
 URL      : https://ayera.dl.sourceforge.net/project/supertuxkart/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Source0  : https://ayera.dl.sourceforge.net/project/supertuxkart/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Summary  : Kart racing game featuring Tux and his friends
@@ -12,6 +12,7 @@ Group    : Development/Tools
 License  : BSD-3-Clause BSL-1.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 Libpng MIT Zlib
 Requires: supertuxkart-bin = %{version}-%{release}
 Requires: supertuxkart-data = %{version}-%{release}
+Requires: supertuxkart-lib = %{version}-%{release}
 Requires: supertuxkart-license = %{version}-%{release}
 BuildRequires : SDL-dev
 BuildRequires : boost-dev
@@ -80,6 +81,16 @@ Group: Data
 data components for the supertuxkart package.
 
 
+%package lib
+Summary: lib components for the supertuxkart package.
+Group: Libraries
+Requires: supertuxkart-data = %{version}-%{release}
+Requires: supertuxkart-license = %{version}-%{release}
+
+%description lib
+lib components for the supertuxkart package.
+
+
 %package license
 Summary: license components for the supertuxkart package.
 Group: Default
@@ -96,7 +107,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1555896655
+export SOURCE_DATE_EPOCH=1555902921
 mkdir -p clr-build
 pushd clr-build
 %cmake .. -DUSE_WIIUSE=0  -DUSE_FRIBIDI=0 -DBUILD_RECORDER=0
@@ -104,7 +115,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1555896655
+export SOURCE_DATE_EPOCH=1555902921
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
 cp data/gui/icons/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_gui_icons_License.txt
@@ -131,6 +142,7 @@ cp data/tracks/introcutscene/license.txt %{buildroot}/usr/share/package-licenses
 cp data/tracks/introcutscene2/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_introcutscene2_license.txt
 cp data/tracks/mines/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_mines_License.txt
 cp data/tracks/minigolf/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_minigolf_license.txt
+cp data/tracks/olivermath/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_olivermath_licenses.txt
 cp data/tracks/overworld/licence2.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_overworld_licence2.txt
 cp data/tracks/sandtrack/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_sandtrack_License.txt
 cp data/tracks/scotland/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_scotland_License.txt
@@ -154,6 +166,11 @@ cp lib/wiiuse/cmake/LICENSE_1_0.txt %{buildroot}/usr/share/package-licenses/supe
 pushd clr-build
 %make_install
 popd
+## install_append content
+mkdir -p %{buildroot}/usr/lib64
+cp clr-build/lib/libsquish/libsquish.so.* %{buildroot}/usr/lib64
+cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr/lib64
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -5166,6 +5183,11 @@ popd
 /usr/share/supertuxkart/data/ttf/SigmarOne.otf
 /usr/share/supertuxkart/data/ttf/wqy-microhei.ttf
 
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libangelscript.so.2.32.0
+/usr/lib64/libsquish.so.0.0
+
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/supertuxkart/data_gui_icons_License.txt
@@ -5192,6 +5214,7 @@ popd
 /usr/share/package-licenses/supertuxkart/data_tracks_introcutscene_license.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_mines_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_minigolf_license.txt
+/usr/share/package-licenses/supertuxkart/data_tracks_olivermath_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_overworld_licence2.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_sandtrack_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_scotland_License.txt

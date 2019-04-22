@@ -1,0 +1,3 @@
+mkdir -p %{buildroot}/usr/lib64
+cp clr-build/lib/libsquish/libsquish.so.* %{buildroot}/usr/lib64
+cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr/lib64

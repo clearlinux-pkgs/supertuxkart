@@ -5,8 +5,8 @@
 Name     : supertuxkart
 Version  : 1.0
 Release  : 6
-URL      : https://ayera.dl.sourceforge.net/project/supertuxkart/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
-Source0  : https://ayera.dl.sourceforge.net/project/supertuxkart/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
+URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
+Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Summary  : Kart racing game featuring Tux and his friends
 Group    : Development/Tools
 License  : BSD-3-Clause BSL-1.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 Libpng MIT Zlib

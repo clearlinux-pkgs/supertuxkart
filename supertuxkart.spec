@@ -4,10 +4,10 @@
 #
 Name     : supertuxkart
 Version  : 1.0
-Release  : 6
+Release  : 7
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
-Summary  : Kart racing game featuring Tux and his friends
+Summary  : squish DXT library
 Group    : Development/Tools
 License  : BSD-3-Clause BSL-1.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 Libpng MIT Zlib
 Requires: supertuxkart-bin = %{version}-%{release}
@@ -35,7 +35,7 @@ BuildRequires : libvorbis-dev
 BuildRequires : mesa-dev
 BuildRequires : openal-soft-dev
 BuildRequires : openblas
-BuildRequires : openjdk9
+BuildRequires : openjdk11
 BuildRequires : openssl-dev
 BuildRequires : perl
 BuildRequires : pkg-config
@@ -56,12 +56,8 @@ BuildRequires : wayland-dev
 BuildRequires : zlib-dev
 
 %description
-ZLIB DATA COMPRESSION LIBRARY
-zlib 1.2.7 is a general purpose data compression library.  All the code is
-thread safe.  The data format used by the zlib library is described by RFCs
-(Request for Comments) 1950 to 1952 in the files
-http://tools.ietf.org/html/rfc1950 (zlib format), rfc1951 (deflate format) and
-rfc1952 (gzip format).
+The Independent JPEG Group's JPEG software
+==========================================
 
 %package bin
 Summary: bin components for the supertuxkart package.
@@ -106,25 +102,37 @@ license components for the supertuxkart package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1555902921
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1564010073
 mkdir -p clr-build
 pushd clr-build
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 %cmake .. -DUSE_WIIUSE=0  -DUSE_FRIBIDI=0 -DBUILD_RECORDER=0
-make  %{?_smp_mflags}
+make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1555902921
+export SOURCE_DATE_EPOCH=1564010073
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
+cp COPYING %{buildroot}/usr/share/package-licenses/supertuxkart/COPYING
 cp data/gui/icons/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_gui_icons_License.txt
+cp data/karts/amanda/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_amanda_licenses.txt
 cp data/karts/beastie/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_beastie_licenses.txt
+cp data/karts/emule/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_emule_licenses.txt
+cp data/karts/gavroche/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_gavroche_licenses.txt
 cp data/karts/konqi/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_konqi_License.txt
+cp data/karts/sara_the_racer/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_sara_the_racer_licenses.txt
 cp data/karts/wilber/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_wilber_licenses.txt
+cp data/library/hd_metalWoodOldChestTop_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_hd_metalWoodOldChestTop_a_licenses.txt
 cp data/library/hd_palmTree_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_hd_palmTree_a_licenses.txt
 cp data/library/stklib_bambooTorch_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_stklib_bambooTorch_a_licenses.txt
 cp data/library/stklib_sagebrush_a/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_stklib_sagebrush_a_license.txt
+cp data/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_licenses.txt
 cp data/music/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_music_licenses.txt
 cp data/skins/coal/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_coal_License.txt
 cp data/skins/common/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_common_License.txt
@@ -134,9 +142,11 @@ cp data/skins/peach/License.txt %{buildroot}/usr/share/package-licenses/supertux
 cp data/skins/ruby/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_ruby_License.txt
 cp data/textures/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_textures_License.txt
 cp data/tracks/battleisland/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_battleisland_licenses.txt
+cp data/tracks/black_forest/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_black_forest_licenses.txt
 cp data/tracks/cave/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_cave_licenses.txt
 cp data/tracks/endcutscene/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_endcutscene_License.txt
 cp data/tracks/fortmagma/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_fortmagma_License.txt
+cp data/tracks/gpwin/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_gpwin_licenses.txt
 cp data/tracks/hacienda/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_hacienda_License.txt
 cp data/tracks/introcutscene/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_introcutscene_license.txt
 cp data/tracks/introcutscene2/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_introcutscene2_license.txt
@@ -149,6 +159,7 @@ cp data/tracks/scotland/License.txt %{buildroot}/usr/share/package-licenses/supe
 cp data/tracks/snowtuxpeak/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_snowtuxpeak_License.txt
 cp data/tracks/soccer_field/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_soccer_field_licenses.txt
 cp data/tracks/stadium/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_stadium_licenses.txt
+cp data/tracks/stk_enterprise/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_stk_enterprise_licenses.txt
 cp data/tracks/volcano_island/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_volcano_island_License.txt
 cp data/tracks/xr591/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_xr591_License.txt
 cp data/tracks/zengarden/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_zengarden_License.txt
@@ -5190,13 +5201,20 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 
 %files license
 %defattr(0644,root,root,0755)
+/usr/share/package-licenses/supertuxkart/COPYING
 /usr/share/package-licenses/supertuxkart/data_gui_icons_License.txt
+/usr/share/package-licenses/supertuxkart/data_karts_amanda_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_karts_beastie_licenses.txt
+/usr/share/package-licenses/supertuxkart/data_karts_emule_licenses.txt
+/usr/share/package-licenses/supertuxkart/data_karts_gavroche_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_karts_konqi_License.txt
+/usr/share/package-licenses/supertuxkart/data_karts_sara_the_racer_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_karts_wilber_licenses.txt
+/usr/share/package-licenses/supertuxkart/data_library_hd_metalWoodOldChestTop_a_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_library_hd_palmTree_a_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_library_stklib_bambooTorch_a_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_library_stklib_sagebrush_a_license.txt
+/usr/share/package-licenses/supertuxkart/data_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_music_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_skins_coal_License.txt
 /usr/share/package-licenses/supertuxkart/data_skins_common_License.txt
@@ -5206,9 +5224,11 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 /usr/share/package-licenses/supertuxkart/data_skins_ruby_License.txt
 /usr/share/package-licenses/supertuxkart/data_textures_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_battleisland_licenses.txt
+/usr/share/package-licenses/supertuxkart/data_tracks_black_forest_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_cave_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_endcutscene_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_fortmagma_License.txt
+/usr/share/package-licenses/supertuxkart/data_tracks_gpwin_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_hacienda_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_introcutscene2_license.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_introcutscene_license.txt
@@ -5221,6 +5241,7 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 /usr/share/package-licenses/supertuxkart/data_tracks_snowtuxpeak_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_soccer_field_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_stadium_licenses.txt
+/usr/share/package-licenses/supertuxkart/data_tracks_stk_enterprise_licenses.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_volcano_island_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_xr591_License.txt
 /usr/share/package-licenses/supertuxkart/data_tracks_zengarden_License.txt

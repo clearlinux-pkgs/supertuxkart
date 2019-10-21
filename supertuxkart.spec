@@ -4,19 +4,21 @@
 #
 Name     : supertuxkart
 Version  : 1.0
-Release  : 7
+Release  : 8
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Summary  : squish DXT library
 Group    : Development/Tools
-License  : BSD-3-Clause BSL-1.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 Libpng MIT Zlib
+License  : BSD-3-Clause BSL-1.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 IJG Libpng MIT OFL-1.1 Zlib bzip2-1.0.5
 Requires: supertuxkart-bin = %{version}-%{release}
 Requires: supertuxkart-data = %{version}-%{release}
 Requires: supertuxkart-lib = %{version}-%{release}
 Requires: supertuxkart-license = %{version}-%{release}
 BuildRequires : SDL-dev
+BuildRequires : apache-ant
 BuildRequires : boost-dev
 BuildRequires : buildreq-cmake
+BuildRequires : buildreq-mvn
 BuildRequires : cmake
 BuildRequires : curl-dev
 BuildRequires : doxygen
@@ -26,6 +28,7 @@ BuildRequires : freeglut-dev
 BuildRequires : freetype-dev
 BuildRequires : git
 BuildRequires : glibc-dev
+BuildRequires : gradle
 BuildRequires : libX11-dev libICE-dev libSM-dev libXau-dev libXcomposite-dev libXcursor-dev libXdamage-dev libXdmcp-dev libXext-dev libXfixes-dev libXft-dev libXi-dev libXinerama-dev libXi-dev libXmu-dev libXpm-dev libXrandr-dev libXrender-dev libXres-dev libXScrnSaver-dev libXt-dev libXtst-dev libXv-dev libXxf86misc-dev libXxf86vm-dev
 BuildRequires : libXrandr-dev
 BuildRequires : libjpeg-turbo-dev
@@ -35,7 +38,6 @@ BuildRequires : libvorbis-dev
 BuildRequires : mesa-dev
 BuildRequires : openal-soft-dev
 BuildRequires : openblas
-BuildRequires : openjdk11
 BuildRequires : openssl-dev
 BuildRequires : perl
 BuildRequires : pkg-config
@@ -52,6 +54,7 @@ BuildRequires : pkgconfig(xrandr)
 BuildRequires : pulseaudio-dev
 BuildRequires : sed
 BuildRequires : texlive
+BuildRequires : util-linux
 BuildRequires : wayland-dev
 BuildRequires : zlib-dev
 
@@ -103,7 +106,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564010073
+export SOURCE_DATE_EPOCH=1571684229
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -112,68 +115,85 @@ export FCFLAGS="$CFLAGS -fno-lto "
 export FFLAGS="$CFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 %cmake .. -DUSE_WIIUSE=0  -DUSE_FRIBIDI=0 -DBUILD_RECORDER=0
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564010073
+export SOURCE_DATE_EPOCH=1571684229
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
-cp COPYING %{buildroot}/usr/share/package-licenses/supertuxkart/COPYING
-cp data/gui/icons/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_gui_icons_License.txt
-cp data/karts/amanda/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_amanda_licenses.txt
-cp data/karts/beastie/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_beastie_licenses.txt
-cp data/karts/emule/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_emule_licenses.txt
-cp data/karts/gavroche/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_gavroche_licenses.txt
-cp data/karts/konqi/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_konqi_License.txt
-cp data/karts/sara_the_racer/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_sara_the_racer_licenses.txt
-cp data/karts/wilber/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_karts_wilber_licenses.txt
-cp data/library/hd_metalWoodOldChestTop_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_hd_metalWoodOldChestTop_a_licenses.txt
-cp data/library/hd_palmTree_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_hd_palmTree_a_licenses.txt
-cp data/library/stklib_bambooTorch_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_stklib_bambooTorch_a_licenses.txt
-cp data/library/stklib_sagebrush_a/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_library_stklib_sagebrush_a_license.txt
-cp data/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_licenses.txt
-cp data/music/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_music_licenses.txt
-cp data/skins/coal/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_coal_License.txt
-cp data/skins/common/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_common_License.txt
-cp data/skins/forest/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_forest_License.txt
-cp data/skins/ocean/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_ocean_License.txt
-cp data/skins/peach/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_peach_License.txt
-cp data/skins/ruby/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_skins_ruby_License.txt
-cp data/textures/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_textures_License.txt
-cp data/tracks/battleisland/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_battleisland_licenses.txt
-cp data/tracks/black_forest/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_black_forest_licenses.txt
-cp data/tracks/cave/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_cave_licenses.txt
-cp data/tracks/endcutscene/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_endcutscene_License.txt
-cp data/tracks/fortmagma/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_fortmagma_License.txt
-cp data/tracks/gpwin/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_gpwin_licenses.txt
-cp data/tracks/hacienda/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_hacienda_License.txt
-cp data/tracks/introcutscene/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_introcutscene_license.txt
-cp data/tracks/introcutscene2/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_introcutscene2_license.txt
-cp data/tracks/mines/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_mines_License.txt
-cp data/tracks/minigolf/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_minigolf_license.txt
-cp data/tracks/olivermath/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_olivermath_licenses.txt
-cp data/tracks/overworld/licence2.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_overworld_licence2.txt
-cp data/tracks/sandtrack/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_sandtrack_License.txt
-cp data/tracks/scotland/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_scotland_License.txt
-cp data/tracks/snowtuxpeak/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_snowtuxpeak_License.txt
-cp data/tracks/soccer_field/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_soccer_field_licenses.txt
-cp data/tracks/stadium/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_stadium_licenses.txt
-cp data/tracks/stk_enterprise/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_stk_enterprise_licenses.txt
-cp data/tracks/volcano_island/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_volcano_island_License.txt
-cp data/tracks/xr591/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_xr591_License.txt
-cp data/tracks/zengarden/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/data_tracks_zengarden_License.txt
-cp data/ttf/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/data_ttf_LICENSE
-cp lib/bullet/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/lib_bullet_LICENSE
-cp lib/enet/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/lib_enet_LICENSE
-cp lib/enet/docs/license.dox %{buildroot}/usr/share/package-licenses/supertuxkart/lib_enet_docs_license.dox
-cp lib/glew/LICENSE.txt %{buildroot}/usr/share/package-licenses/supertuxkart/lib_glew_LICENSE.txt
-cp lib/libpng/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/lib_libpng_LICENSE
-cp lib/libpng/contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/supertuxkart/lib_libpng_contrib_gregbook_COPYING
-cp lib/libpng/contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/lib_libpng_contrib_gregbook_LICENSE
-cp lib/libsquish/LICENSE.txt %{buildroot}/usr/share/package-licenses/supertuxkart/lib_libsquish_LICENSE.txt
-cp lib/wiiuse/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/lib_wiiuse_LICENSE
-cp lib/wiiuse/cmake/LICENSE_1_0.txt %{buildroot}/usr/share/package-licenses/supertuxkart/lib_wiiuse_cmake_LICENSE_1_0.txt
+cp %{_builddir}/'supertuxkart-1.0/data/ttf/SIL Open Font License.txt' %{buildroot}/usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812
+cp %{_builddir}/supertuxkart-1.0/COPYING %{buildroot}/usr/share/package-licenses/supertuxkart/e59800998086062b9a9ed0f39f1ea6a2ede32d37
+cp %{_builddir}/supertuxkart-1.0/data/gui/icons/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f540074b655a9fbfef1c05f040f5193d308843e7
+cp %{_builddir}/supertuxkart-1.0/data/gui/icons/android/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f6b811ac82c13dab904fcff9abaee6dede22a65b
+cp %{_builddir}/supertuxkart-1.0/data/karts/beastie/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/0f3b9abc97c27cae8475cfe1a949a233438afd0e
+cp %{_builddir}/supertuxkart-1.0/data/karts/emule/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c31b6a7a74991d3873e7e39020e0a6d071bec098
+cp %{_builddir}/supertuxkart-1.0/data/karts/gavroche/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b771ac784abebda4ff2f5c61b236c314d46d0afa
+cp %{_builddir}/supertuxkart-1.0/data/karts/kiki/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/077b4fdb39e0b09e38afa2a03e1af228b35e7747
+cp %{_builddir}/supertuxkart-1.0/data/karts/konqi/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/5f52c76a690f170023d39a4e657a3a7b24306e98
+cp %{_builddir}/supertuxkart-1.0/data/karts/sara_the_racer/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c7249bb6c96485e98c43a9a1850209f20801ee20
+cp %{_builddir}/supertuxkart-1.0/data/karts/wilber/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/adcb38b6a2a6effc10d97372b599f173014402e0
+cp %{_builddir}/supertuxkart-1.0/data/library/gfx_cameraRig_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7ce90b58ebae63ad9a68de30663416dee084ab9b
+cp %{_builddir}/supertuxkart-1.0/data/library/gfx_jetblastGround_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/68078064e5fe9871542cd3f02469ff1350a2f4b4
+cp %{_builddir}/supertuxkart-1.0/data/library/hd_chineseRedLantern_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/15909db3eefa32dd837ce5c643fad1f834fee327
+cp %{_builddir}/supertuxkart-1.0/data/library/hd_metalWoodOldChestTop_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/6fc10119be1055a3b2f546feed8a54ffe3340cca
+cp %{_builddir}/supertuxkart-1.0/data/library/hd_palmTree_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/d13e2e2c44e47b2f689d71ffb74d02652e39a41d
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_asianLantern_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b3021ed08412cdeb692f36472893b94448630e40
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_autumnTree_b/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/0b4db270bf26b549102b7d6f1d38fd42d9b33b97
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_aztecHut_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/82f0d28bc723c5eecd62f5f51058d7bb7cfdcbb5
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_bambooTorch_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2039dac745986fb886c8be59107e8d3ee825b550
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_beachWomen_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/4ccc86fd4fedca2b084d4bfb628fb81845e7c993
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_kikiPainter_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/44909530424243e741856fda8df20179a3f5681f
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_sagebrush_a/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/594bf4a28dbe3e027d1053c0d1a6280f51a8ea5f
+cp %{_builddir}/supertuxkart-1.0/data/library/stklib_silvianKiosk_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/701dbe3a6300f36728fe1e0da2f35ff5ca547297
+cp %{_builddir}/supertuxkart-1.0/data/music/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/16c419bf6d2147ab1fa733a20b1cd38fe1472865
+cp %{_builddir}/supertuxkart-1.0/data/skins/coal/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/caddaf5f34c201eb84855becf958892f7fa66149
+cp %{_builddir}/supertuxkart-1.0/data/skins/common/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2dbaf00f8ff1d45857457902bb040ea757c82100
+cp %{_builddir}/supertuxkart-1.0/data/skins/forest/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
+cp %{_builddir}/supertuxkart-1.0/data/skins/ocean/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
+cp %{_builddir}/supertuxkart-1.0/data/skins/peach/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
+cp %{_builddir}/supertuxkart-1.0/data/skins/ruby/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
+cp %{_builddir}/supertuxkart-1.0/data/textures/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f58800dbbc83890e5ba7c3d970e3f341e1f80cdd
+cp %{_builddir}/supertuxkart-1.0/data/tracks/arena_candela_city/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a0ffa718d011bed07d6b6889f91100e566921235
+cp %{_builddir}/supertuxkart-1.0/data/tracks/battleisland/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/35bf7213ad85c24a22dfd9da66587c6442a1b011
+cp %{_builddir}/supertuxkart-1.0/data/tracks/black_forest/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c84ddc10fa9d8ddd854d4c773e7ff0799a1d9e80
+cp %{_builddir}/supertuxkart-1.0/data/tracks/candela_city/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a0ffa718d011bed07d6b6889f91100e566921235
+cp %{_builddir}/supertuxkart-1.0/data/tracks/cave/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/dce6ccc335043c09980b153f88ff7031fd8cc4db
+cp %{_builddir}/supertuxkart-1.0/data/tracks/cocoa_temple/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f5e203a8b1a356674745082cbeb99fbae0ec759b
+cp %{_builddir}/supertuxkart-1.0/data/tracks/endcutscene/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/831826697c18be01de7253652b6f5d3c9943c360
+cp %{_builddir}/supertuxkart-1.0/data/tracks/fortmagma/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7a61ef1745f050ea598a2fb7d98d01428fcdaf20
+cp %{_builddir}/supertuxkart-1.0/data/tracks/hacienda/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/6c47901c75dd9f1ffd101f3eb28f3657b97fa43b
+cp %{_builddir}/supertuxkart-1.0/data/tracks/introcutscene/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/3be05405070433c833f539cb9a11a18e514c04c3
+cp %{_builddir}/supertuxkart-1.0/data/tracks/introcutscene2/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/55a3bc5715721820f3e23313602c43397c5cf147
+cp %{_builddir}/supertuxkart-1.0/data/tracks/mines/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/4cd9190ef7cc9f1d27e16472c7c5f75af66f57d8
+cp %{_builddir}/supertuxkart-1.0/data/tracks/minigolf/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1d8ba82121a837056f0f33e3fa127ab7777268f2
+cp %{_builddir}/supertuxkart-1.0/data/tracks/olivermath/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b96a1f831696b302e9837b91391e7ea9c06ca52b
+cp %{_builddir}/supertuxkart-1.0/data/tracks/overworld/licence2.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8ad97863fd24da454396af06227b65595c87cddb
+cp %{_builddir}/supertuxkart-1.0/data/tracks/sandtrack/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/483089ba439390cc32f6bd3b6f81dc8efd91551d
+cp %{_builddir}/supertuxkart-1.0/data/tracks/scotland/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/28afceece7c7c1b46b3cd29f35fe2950daf13eb6
+cp %{_builddir}/supertuxkart-1.0/data/tracks/snowtuxpeak/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/df8e887e251dc7d2aebf2f10c1cfe22689b8af36
+cp %{_builddir}/supertuxkart-1.0/data/tracks/soccer_field/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/031af954cad02af7667548798e3edd50e51c4a3e
+cp %{_builddir}/supertuxkart-1.0/data/tracks/stadium/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/dfaa4937ee4125087b4d6a0aba1e94686171ac84
+cp %{_builddir}/supertuxkart-1.0/data/tracks/stk_enterprise/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8c5462e7b7df03926a95217de93366cc2b144dc1
+cp %{_builddir}/supertuxkart-1.0/data/tracks/volcano_island/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/55bb301f7f6b4819e325fcf75c07dbc1502fb7df
+cp %{_builddir}/supertuxkart-1.0/data/tracks/xr591/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/fb02d397368e5eff31f55477eeea1513c4222251
+cp %{_builddir}/supertuxkart-1.0/data/tracks/zengarden/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a0e2a8311c34f3ff1795bbbcaab0aea280dc36b1
+cp %{_builddir}/supertuxkart-1.0/data/ttf/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/7c5e8afb51e35913ff421a29e3d7cd73cba23715
+cp %{_builddir}/supertuxkart-1.0/lib/bullet/BulletLicense.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8d8f9fb057f8836636b30305da047c98df65a179
+cp %{_builddir}/supertuxkart-1.0/lib/bullet/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/ab7f5a074dba7b46b0dff5e54453eea3e35493b3
+cp %{_builddir}/supertuxkart-1.0/lib/enet/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/6c93f839382b0b684116fe9816f99948f7ccf0d3
+cp %{_builddir}/supertuxkart-1.0/lib/enet/docs/license.dox %{buildroot}/usr/share/package-licenses/supertuxkart/f5c0ef431fe468174bdaf97ea0965305d2c68b7e
+cp %{_builddir}/supertuxkart-1.0/lib/glew/LICENSE.txt %{buildroot}/usr/share/package-licenses/supertuxkart/0ca22faedb8ee495473a82c4d91452493b22ac9f
+cp %{_builddir}/supertuxkart-1.0/lib/irrlicht/doc/bzip2-license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/d964dbe91cbf7511e4f1857db9e99fdaf6658055
+cp %{_builddir}/supertuxkart-1.0/lib/irrlicht/doc/irrlicht-license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bcbd5fcde0d5d5a7a0e6729f024dec58d6f48777
+cp %{_builddir}/supertuxkart-1.0/lib/irrlicht/doc/jpglib-license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/042c2d15bbb2ea50e91497a2efdecb91fb420fad
+cp %{_builddir}/supertuxkart-1.0/lib/irrlicht/doc/libpng-license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/97b8284aa8384d431f7fb5d3f282cc5c40840a4f
+cp %{_builddir}/supertuxkart-1.0/lib/libpng/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/ee28d27a80cd161ed21a85aceb8303840c092e8a
+cp %{_builddir}/supertuxkart-1.0/lib/libpng/contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/supertuxkart/80b6f4fcbc19d7431482cba012e86f587828c1ba
+cp %{_builddir}/supertuxkart-1.0/lib/libpng/contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/aa4b9207aaff26bc16c562d6cd766a9eed49af1e
+cp %{_builddir}/supertuxkart-1.0/lib/libsquish/LICENSE.txt %{buildroot}/usr/share/package-licenses/supertuxkart/4f0bc63cc3f7fda5975edb7adfb47b68d00e6e0b
+cp %{_builddir}/supertuxkart-1.0/lib/wiiuse/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/2abb7823a8eb4109de457da184c1a9787731edc1
+cp %{_builddir}/supertuxkart-1.0/lib/wiiuse/cmake/LICENSE_1_0.txt %{buildroot}/usr/share/package-licenses/supertuxkart/3cba29011be2b9d59f6204d6fa0a386b1b2dbd90
 pushd clr-build
 %make_install
 popd
@@ -5201,58 +5221,71 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/supertuxkart/COPYING
-/usr/share/package-licenses/supertuxkart/data_gui_icons_License.txt
-/usr/share/package-licenses/supertuxkart/data_karts_amanda_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_karts_beastie_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_karts_emule_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_karts_gavroche_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_karts_konqi_License.txt
-/usr/share/package-licenses/supertuxkart/data_karts_sara_the_racer_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_karts_wilber_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_library_hd_metalWoodOldChestTop_a_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_library_hd_palmTree_a_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_library_stklib_bambooTorch_a_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_library_stklib_sagebrush_a_license.txt
-/usr/share/package-licenses/supertuxkart/data_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_music_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_skins_coal_License.txt
-/usr/share/package-licenses/supertuxkart/data_skins_common_License.txt
-/usr/share/package-licenses/supertuxkart/data_skins_forest_License.txt
-/usr/share/package-licenses/supertuxkart/data_skins_ocean_License.txt
-/usr/share/package-licenses/supertuxkart/data_skins_peach_License.txt
-/usr/share/package-licenses/supertuxkart/data_skins_ruby_License.txt
-/usr/share/package-licenses/supertuxkart/data_textures_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_battleisland_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_black_forest_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_cave_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_endcutscene_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_fortmagma_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_gpwin_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_hacienda_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_introcutscene2_license.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_introcutscene_license.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_mines_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_minigolf_license.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_olivermath_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_overworld_licence2.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_sandtrack_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_scotland_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_snowtuxpeak_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_soccer_field_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_stadium_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_stk_enterprise_licenses.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_volcano_island_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_xr591_License.txt
-/usr/share/package-licenses/supertuxkart/data_tracks_zengarden_License.txt
-/usr/share/package-licenses/supertuxkart/data_ttf_LICENSE
-/usr/share/package-licenses/supertuxkart/lib_bullet_LICENSE
-/usr/share/package-licenses/supertuxkart/lib_enet_LICENSE
-/usr/share/package-licenses/supertuxkart/lib_enet_docs_license.dox
-/usr/share/package-licenses/supertuxkart/lib_glew_LICENSE.txt
-/usr/share/package-licenses/supertuxkart/lib_libpng_LICENSE
-/usr/share/package-licenses/supertuxkart/lib_libpng_contrib_gregbook_COPYING
-/usr/share/package-licenses/supertuxkart/lib_libpng_contrib_gregbook_LICENSE
-/usr/share/package-licenses/supertuxkart/lib_libsquish_LICENSE.txt
-/usr/share/package-licenses/supertuxkart/lib_wiiuse_LICENSE
-/usr/share/package-licenses/supertuxkart/lib_wiiuse_cmake_LICENSE_1_0.txt
+/usr/share/package-licenses/supertuxkart/031af954cad02af7667548798e3edd50e51c4a3e
+/usr/share/package-licenses/supertuxkart/042c2d15bbb2ea50e91497a2efdecb91fb420fad
+/usr/share/package-licenses/supertuxkart/077b4fdb39e0b09e38afa2a03e1af228b35e7747
+/usr/share/package-licenses/supertuxkart/0b4db270bf26b549102b7d6f1d38fd42d9b33b97
+/usr/share/package-licenses/supertuxkart/0ca22faedb8ee495473a82c4d91452493b22ac9f
+/usr/share/package-licenses/supertuxkart/0f3b9abc97c27cae8475cfe1a949a233438afd0e
+/usr/share/package-licenses/supertuxkart/15909db3eefa32dd837ce5c643fad1f834fee327
+/usr/share/package-licenses/supertuxkart/16c419bf6d2147ab1fa733a20b1cd38fe1472865
+/usr/share/package-licenses/supertuxkart/1d8ba82121a837056f0f33e3fa127ab7777268f2
+/usr/share/package-licenses/supertuxkart/2039dac745986fb886c8be59107e8d3ee825b550
+/usr/share/package-licenses/supertuxkart/28afceece7c7c1b46b3cd29f35fe2950daf13eb6
+/usr/share/package-licenses/supertuxkart/2abb7823a8eb4109de457da184c1a9787731edc1
+/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
+/usr/share/package-licenses/supertuxkart/2dbaf00f8ff1d45857457902bb040ea757c82100
+/usr/share/package-licenses/supertuxkart/35bf7213ad85c24a22dfd9da66587c6442a1b011
+/usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812
+/usr/share/package-licenses/supertuxkart/3be05405070433c833f539cb9a11a18e514c04c3
+/usr/share/package-licenses/supertuxkart/3cba29011be2b9d59f6204d6fa0a386b1b2dbd90
+/usr/share/package-licenses/supertuxkart/44909530424243e741856fda8df20179a3f5681f
+/usr/share/package-licenses/supertuxkart/483089ba439390cc32f6bd3b6f81dc8efd91551d
+/usr/share/package-licenses/supertuxkart/4ccc86fd4fedca2b084d4bfb628fb81845e7c993
+/usr/share/package-licenses/supertuxkart/4cd9190ef7cc9f1d27e16472c7c5f75af66f57d8
+/usr/share/package-licenses/supertuxkart/4f0bc63cc3f7fda5975edb7adfb47b68d00e6e0b
+/usr/share/package-licenses/supertuxkart/55a3bc5715721820f3e23313602c43397c5cf147
+/usr/share/package-licenses/supertuxkart/55bb301f7f6b4819e325fcf75c07dbc1502fb7df
+/usr/share/package-licenses/supertuxkart/594bf4a28dbe3e027d1053c0d1a6280f51a8ea5f
+/usr/share/package-licenses/supertuxkart/5f52c76a690f170023d39a4e657a3a7b24306e98
+/usr/share/package-licenses/supertuxkart/68078064e5fe9871542cd3f02469ff1350a2f4b4
+/usr/share/package-licenses/supertuxkart/6c47901c75dd9f1ffd101f3eb28f3657b97fa43b
+/usr/share/package-licenses/supertuxkart/6c93f839382b0b684116fe9816f99948f7ccf0d3
+/usr/share/package-licenses/supertuxkart/6fc10119be1055a3b2f546feed8a54ffe3340cca
+/usr/share/package-licenses/supertuxkart/701dbe3a6300f36728fe1e0da2f35ff5ca547297
+/usr/share/package-licenses/supertuxkart/7a61ef1745f050ea598a2fb7d98d01428fcdaf20
+/usr/share/package-licenses/supertuxkart/7c5e8afb51e35913ff421a29e3d7cd73cba23715
+/usr/share/package-licenses/supertuxkart/7ce90b58ebae63ad9a68de30663416dee084ab9b
+/usr/share/package-licenses/supertuxkart/80b6f4fcbc19d7431482cba012e86f587828c1ba
+/usr/share/package-licenses/supertuxkart/82f0d28bc723c5eecd62f5f51058d7bb7cfdcbb5
+/usr/share/package-licenses/supertuxkart/831826697c18be01de7253652b6f5d3c9943c360
+/usr/share/package-licenses/supertuxkart/8ad97863fd24da454396af06227b65595c87cddb
+/usr/share/package-licenses/supertuxkart/8c5462e7b7df03926a95217de93366cc2b144dc1
+/usr/share/package-licenses/supertuxkart/8d8f9fb057f8836636b30305da047c98df65a179
+/usr/share/package-licenses/supertuxkart/97b8284aa8384d431f7fb5d3f282cc5c40840a4f
+/usr/share/package-licenses/supertuxkart/a0e2a8311c34f3ff1795bbbcaab0aea280dc36b1
+/usr/share/package-licenses/supertuxkart/a0ffa718d011bed07d6b6889f91100e566921235
+/usr/share/package-licenses/supertuxkart/aa4b9207aaff26bc16c562d6cd766a9eed49af1e
+/usr/share/package-licenses/supertuxkart/ab7f5a074dba7b46b0dff5e54453eea3e35493b3
+/usr/share/package-licenses/supertuxkart/adcb38b6a2a6effc10d97372b599f173014402e0
+/usr/share/package-licenses/supertuxkart/b3021ed08412cdeb692f36472893b94448630e40
+/usr/share/package-licenses/supertuxkart/b771ac784abebda4ff2f5c61b236c314d46d0afa
+/usr/share/package-licenses/supertuxkart/b96a1f831696b302e9837b91391e7ea9c06ca52b
+/usr/share/package-licenses/supertuxkart/bcbd5fcde0d5d5a7a0e6729f024dec58d6f48777
+/usr/share/package-licenses/supertuxkart/c31b6a7a74991d3873e7e39020e0a6d071bec098
+/usr/share/package-licenses/supertuxkart/c7249bb6c96485e98c43a9a1850209f20801ee20
+/usr/share/package-licenses/supertuxkart/c84ddc10fa9d8ddd854d4c773e7ff0799a1d9e80
+/usr/share/package-licenses/supertuxkart/caddaf5f34c201eb84855becf958892f7fa66149
+/usr/share/package-licenses/supertuxkart/d13e2e2c44e47b2f689d71ffb74d02652e39a41d
+/usr/share/package-licenses/supertuxkart/d964dbe91cbf7511e4f1857db9e99fdaf6658055
+/usr/share/package-licenses/supertuxkart/dce6ccc335043c09980b153f88ff7031fd8cc4db
+/usr/share/package-licenses/supertuxkart/df8e887e251dc7d2aebf2f10c1cfe22689b8af36
+/usr/share/package-licenses/supertuxkart/dfaa4937ee4125087b4d6a0aba1e94686171ac84
+/usr/share/package-licenses/supertuxkart/e59800998086062b9a9ed0f39f1ea6a2ede32d37
+/usr/share/package-licenses/supertuxkart/ee28d27a80cd161ed21a85aceb8303840c092e8a
+/usr/share/package-licenses/supertuxkart/f540074b655a9fbfef1c05f040f5193d308843e7
+/usr/share/package-licenses/supertuxkart/f58800dbbc83890e5ba7c3d970e3f341e1f80cdd
+/usr/share/package-licenses/supertuxkart/f5c0ef431fe468174bdaf97ea0965305d2c68b7e
+/usr/share/package-licenses/supertuxkart/f5e203a8b1a356674745082cbeb99fbae0ec759b
+/usr/share/package-licenses/supertuxkart/f6b811ac82c13dab904fcff9abaee6dede22a65b
+/usr/share/package-licenses/supertuxkart/fb02d397368e5eff31f55477eeea1513c4222251

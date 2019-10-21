@@ -4,7 +4,7 @@
 #
 Name     : supertuxkart
 Version  : 1.0
-Release  : 8
+Release  : 9
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/supertuxkart-1.0-src.tar.xz
 Summary  : squish DXT library
@@ -15,10 +15,8 @@ Requires: supertuxkart-data = %{version}-%{release}
 Requires: supertuxkart-lib = %{version}-%{release}
 Requires: supertuxkart-license = %{version}-%{release}
 BuildRequires : SDL-dev
-BuildRequires : apache-ant
 BuildRequires : boost-dev
 BuildRequires : buildreq-cmake
-BuildRequires : buildreq-mvn
 BuildRequires : cmake
 BuildRequires : curl-dev
 BuildRequires : doxygen
@@ -28,7 +26,6 @@ BuildRequires : freeglut-dev
 BuildRequires : freetype-dev
 BuildRequires : git
 BuildRequires : glibc-dev
-BuildRequires : gradle
 BuildRequires : libX11-dev libICE-dev libSM-dev libXau-dev libXcomposite-dev libXcursor-dev libXdamage-dev libXdmcp-dev libXext-dev libXfixes-dev libXft-dev libXi-dev libXinerama-dev libXi-dev libXmu-dev libXpm-dev libXrandr-dev libXrender-dev libXres-dev libXScrnSaver-dev libXt-dev libXtst-dev libXv-dev libXxf86misc-dev libXxf86vm-dev
 BuildRequires : libXrandr-dev
 BuildRequires : libjpeg-turbo-dev
@@ -106,7 +103,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1571684229
+export SOURCE_DATE_EPOCH=1571684928
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -119,7 +116,7 @@ make  %{?_smp_mflags}  VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1571684229
+export SOURCE_DATE_EPOCH=1571684928
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
 cp %{_builddir}/'supertuxkart-1.0/data/ttf/SIL Open Font License.txt' %{buildroot}/usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812

@@ -4,7 +4,7 @@
 #
 Name     : supertuxkart
 Version  : 1.1
-Release  : 10
+Release  : 11
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.1/supertuxkart-1.1-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.1/supertuxkart-1.1-src.tar.xz
 Summary  : Kart racing game featuring Tux and his friends

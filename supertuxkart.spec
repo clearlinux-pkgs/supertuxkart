@@ -4,10 +4,10 @@
 #
 Name     : supertuxkart
 Version  : 1.1
-Release  : 11
+Release  : 12
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.1/supertuxkart-1.1-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.1/supertuxkart-1.1-src.tar.xz
-Summary  : Kart racing game featuring Tux and his friends
+Summary  : zlib compression library
 Group    : Development/Tools
 License  : BSD-3-Clause BSL-1.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 IJG Libpng MIT OFL-1.1 Zlib bzip2-1.0.5
 Requires: supertuxkart-bin = %{version}-%{release}
@@ -35,6 +35,7 @@ BuildRequires : libvorbis-dev
 BuildRequires : mesa-dev
 BuildRequires : openal-soft-dev
 BuildRequires : openblas
+BuildRequires : opencv-dev
 BuildRequires : openssl-dev
 BuildRequires : perl
 BuildRequires : pkg-config
@@ -51,6 +52,7 @@ BuildRequires : pkgconfig(xrandr)
 BuildRequires : pulseaudio-dev
 BuildRequires : sed
 BuildRequires : texlive
+BuildRequires : util-linux
 BuildRequires : wayland-dev
 BuildRequires : zlib-dev
 
@@ -107,49 +109,126 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1578342824
+export SOURCE_DATE_EPOCH=1592658511
 mkdir -p clr-build
 pushd clr-build
-# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %cmake .. -DUSE_WIIUSE=0  -DUSE_FRIBIDI=0 -DBUILD_RECORDER=0
-make  %{?_smp_mflags}  VERBOSE=1
+make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1578342824
+export SOURCE_DATE_EPOCH=1592658511
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
 cp %{_builddir}/'supertuxkart-1.1-src/data/ttf/SIL Open Font License.txt' %{buildroot}/usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812
 cp %{_builddir}/supertuxkart-1.1-src/COPYING %{buildroot}/usr/share/package-licenses/supertuxkart/e59800998086062b9a9ed0f39f1ea6a2ede32d37
+cp %{_builddir}/supertuxkart-1.1-src/data/gui/icons/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2c6d6d051f04f55afb85a4380fff77ab9297f95f
 cp %{_builddir}/supertuxkart-1.1-src/data/gui/icons/android/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f6b811ac82c13dab904fcff9abaee6dede22a65b
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/adiumy/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/74dfca3c2b8f02c9640eecfef3ce34f7ece92f83
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/amanda/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/20b4681477d4dc4e5c04d1e86dcb93e183858baa
 cp %{_builddir}/supertuxkart-1.1-src/data/karts/beastie/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/0f3b9abc97c27cae8475cfe1a949a233438afd0e
 cp %{_builddir}/supertuxkart-1.1-src/data/karts/emule/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c31b6a7a74991d3873e7e39020e0a6d071bec098
 cp %{_builddir}/supertuxkart-1.1-src/data/karts/gavroche/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b771ac784abebda4ff2f5c61b236c314d46d0afa
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/hexley/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/593339db283b351b3acd91e7767f997d756b5075
 cp %{_builddir}/supertuxkart-1.1-src/data/karts/kiki/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/077b4fdb39e0b09e38afa2a03e1af228b35e7747
 cp %{_builddir}/supertuxkart-1.1-src/data/karts/konqi/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/5f52c76a690f170023d39a4e657a3a7b24306e98
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/konqi/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/15597b642bf43c326ce37b772cfdc99e0a796cc7
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/nolok/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/245abbe13592f75b05987689fda2785028d998e7
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/pidgin/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/85e1b9bc8be9988b1092c7de6f1a190a2b1abe34
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/puffy/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/da04899f6614a2acee6722311feb8e606adf457f
 cp %{_builddir}/supertuxkart-1.1-src/data/karts/sara_the_racer/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c7249bb6c96485e98c43a9a1850209f20801ee20
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/sara_the_wizard/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bd6b4474b32132bc2e55cb962a0d8af3f7781011
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/suzanne/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8e5e5c3dd4cdb4a36d0875e891b39140262e1e64
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/tux/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/56e0f8c14d40f71cb248c74c67c62d48293eb785
 cp %{_builddir}/supertuxkart-1.1-src/data/karts/wilber/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/adcb38b6a2a6effc10d97372b599f173014402e0
+cp %{_builddir}/supertuxkart-1.1-src/data/karts/xue/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/9c6bb3588d3b608d91f81751516b6c1f8bea2fe4
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_advertisingScreenArena_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7a4501b3d2cb236eabab06dc02d5bc51b22dbdfe
 cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_cameraRig_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7ce90b58ebae63ad9a68de30663416dee084ab9b
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_fireflies_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/66299097a265c8920635329ce0e0d2a17840f269
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_fireworkExplosion_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c4d8dd7764f73c6c17930723cc9906117109d1b2
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_fireworkTubeBlueSparks_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/07dfcc4bf261d0c79c0083d78d065c61ec129a57
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_fireworkTube_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/65a7e992f22f0243fb295f7878cab5797573287c
 cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_jetblastGround_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/68078064e5fe9871542cd3f02469ff1350a2f4b4
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_lightFlash_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/e8dbd88393026cf1da9b2a220288fbfe25ec2688
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_lightning_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/77cdddbd15760dab902de8008beafff16781fb7c
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_meteorit_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/af8f2ff38aa79ef68af9129d13e33247c298ee1a
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_rocketBlast_sa/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/0e3b6002db46f468bca0aedae245131e27b5e5ed
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_solarCore_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7c1ad0055da8e4d31a7ed9b30a5d5e129f6e22d3
+cp %{_builddir}/supertuxkart-1.1-src/data/library/gfx_volumetricNebula_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bb07a62df520c66b0de2dfc8f57c6dcf6afe917a
 cp %{_builddir}/supertuxkart-1.1-src/data/library/hd_chineseRedLantern_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/15909db3eefa32dd837ce5c643fad1f834fee327
 cp %{_builddir}/supertuxkart-1.1-src/data/library/hd_metalWoodOldChestTop_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/6fc10119be1055a3b2f546feed8a54ffe3340cca
+cp %{_builddir}/supertuxkart-1.1-src/data/library/hd_metalWoodOldChest_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a7537463f87fe3d16ca317c95b1a7fb96af1a4ec
+cp %{_builddir}/supertuxkart-1.1-src/data/library/hd_modernStreetLamp_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2c7064b614428db695736b29115cac0d2727b268
 cp %{_builddir}/supertuxkart-1.1-src/data/library/hd_palmTree_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/d13e2e2c44e47b2f689d71ffb74d02652e39a41d
+cp %{_builddir}/supertuxkart-1.1-src/data/library/meta_railLandscape_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/72116aed30b45f5224de82a3ed23877eec020bf3
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stk_combineHarvester_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c523113016e591a90e6c85bc9db5cade3a809059
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_ReedBoat_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/89593df1fd3cb9a4a60702db63c69d0e54c8e6dc
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_accacia_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bc658d40140b19120f0564cd012ae1cbbc2cf26b
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_agave_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/296c7b0fbfe1129b197d5a91fc701e828177fe87
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_airConditioner_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/16b714b546a6945084273b67bec2d34e6e72e733
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_animGrass_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/90a8590c9e2138a52612507cfb934f184058d600
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_animalPig_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/fa18653740916391f4d365af7ea71616d02f72d2
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_armchair_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/adeb4f5addab9b78317e0ac13df1e3720c95df03
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_asianLantern_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b3021ed08412cdeb692f36472893b94448630e40
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_asianWoodPost_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/72c61251b2855278f77bb3daa9f9915caffad37d
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnBirch_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/fef9cc4512f23ad92aaba882f9d4bf83b75f357e
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnSmallBush_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b18a818e667c47150e5330ad705c64fd7432f2c1
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnTree_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/cb5d691c7d8c7c9c20849860ee5c4efb5533a1a4
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnTree_b/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/0b4db270bf26b549102b7d6f1d38fd42d9b33b97
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnTree_c/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/722d812646bdf76d892105fefa94ccec88cc1d8b
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnTree_d/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/91792f2c9de768c1848db485aa6634b0f807052f
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnTree_e/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/3e9a096c379d0e6115fdcdc7a06cbb45b3ba1f9e
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnTree_f/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1423ee48989b46b97d85c3213c4f3185133ce355
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnTree_g/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1423ee48989b46b97d85c3213c4f3185133ce355
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_autumnWillow_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b1109f7a7ca5e646be7ca4a63d916180cda05eb4
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_aztecFountain_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/9a92ff0ba4973d3e6567b5d7309df499d252210b
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_aztecHouse_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/4ad3438658e60ac0fdc8bd358fdb77efe90964a3
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_aztecHouse_b/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bae8d4cbe49a46e6a78dbad6fdb0bbd5389e9436
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_aztecHut_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/82f0d28bc723c5eecd62f5f51058d7bb7cfdcbb5
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_aztekGirlCheering_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1464825c358451a42f6922ee4e1fd57460c73b22
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_aztekTorch_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/cdb0fd4c4913c25a7c7488d3b7c8f001dd6b0cd2
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_aztekVase_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/83cc906ca1085ebf6a8bb4bbaf5e893cf26cea39
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_balcony_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a887d5d3e6d0c35bb4195c5e55821a831bfe43e6
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_bambooTorch_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2039dac745986fb886c8be59107e8d3ee825b550
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_beachBarMenu_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c51ede38608b2da3b5bdd855daf131bada85cfdb
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_beachWomen_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/4ccc86fd4fedca2b084d4bfb628fb81845e7c993
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_bird_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/e11bea7d7da8968c79a4a9202b7977f8aa6e68d9
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_bugLamp_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/fadf7bcd6b694fbe97a32fdc42ecc679cd842263
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_butterfly_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7f1e73a45e26116b213b01d95a21f28cb6b92eee
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_carousel_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a143acc04f0b0f75ccfc260397d7c6f5da0d0c7a
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_computer_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a5e0e33d6865b16c1a25deab0caba7fdcfcc930f
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_ferryWheels_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a5545c1aebd21107808ad13b9c8ec85c2c42657a
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_industrialLamp_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/269464e2656d144c4b9d593d16e7f0f285134c79
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_jackOLantern_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7b579e9be8f5377de1c3e58916ba5971c7d25bd7
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_kikiPainter_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/44909530424243e741856fda8df20179a3f5681f
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_kiki_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b2b637a1671937c5afb80cde5316f47dd0f9e7cd
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_konqi_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8ff651097a54ae6377e19f38df2b1cf51c36ed55
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_logBarrierEndPost_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/cad4882fc88a0e55cceb2947ea9513ec5e2c9915
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_monkeyCheering_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bcd981d45049c0d86a33e0a52a6ae5d135051682
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_old_house_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/d1887225e390d479fd237f4df46f7a9a32fd1425
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_pinetree_b/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a2146d4717c90899d69ddeb48f18a4fbf76d040a
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_redXmasLight_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1f970aad42fcfa8a07a2039c09ce6cee9ca66048
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_sagebrush_a/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/594bf4a28dbe3e027d1053c0d1a6280f51a8ea5f
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_silvianFence_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/e93baca9e360ab5721d38a98ae8bf8bec0026ff6
 cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_silvianKiosk_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/701dbe3a6300f36728fe1e0da2f35ff5ca547297
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_silvianTower_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/ccb28b1ca3b7f44b069644823bcfb36b1fa9d7db
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_steamLocomotive_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/83a8f00b9ae661bc656493f9b97318db3aa97c96
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_treeStump_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/59b2d1887ee47e80ce9d4737e5bec5afed520817
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_tvVan_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/aa95640260a26f38077244eaebfb7b5dd44daf07
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_wilberPainter_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/3b67ebba7ed92cd2ed98fba152f459de5b1aca8e
+cp %{_builddir}/supertuxkart-1.1-src/data/library/stklib_wilbertSecurity_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/da5fcaa876d26454fd0c56a184aaca3d807af89e
+cp %{_builddir}/supertuxkart-1.1-src/data/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/80e6f85aaf357b92dc8bd07a07d5918465341659
+cp %{_builddir}/supertuxkart-1.1-src/data/models/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c9571d07b703892211d59af3498dae3348cfacb4
+cp %{_builddir}/supertuxkart-1.1-src/data/music/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f7f7cd2e273ee923a561dace626e622456c91d79
+cp %{_builddir}/supertuxkart-1.1-src/data/sfx/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/178db69a5d44ea70fe32ed7fe7572283916b0aba
 cp %{_builddir}/supertuxkart-1.1-src/data/skins/coal/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/caddaf5f34c201eb84855becf958892f7fa66149
 cp %{_builddir}/supertuxkart-1.1-src/data/skins/common/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2dbaf00f8ff1d45857457902bb040ea757c82100
 cp %{_builddir}/supertuxkart-1.1-src/data/skins/forest/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
@@ -157,30 +236,50 @@ cp %{_builddir}/supertuxkart-1.1-src/data/skins/ocean/License.txt %{buildroot}/u
 cp %{_builddir}/supertuxkart-1.1-src/data/skins/peach/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
 cp %{_builddir}/supertuxkart-1.1-src/data/skins/ruby/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
 cp %{_builddir}/supertuxkart-1.1-src/data/textures/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f58800dbbc83890e5ba7c3d970e3f341e1f80cdd
+cp %{_builddir}/supertuxkart-1.1-src/data/textures/deprecated/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/6e961ef5729aafa515d2074a9f90a0a60ea10f5d
+cp %{_builddir}/supertuxkart-1.1-src/data/textures/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c7aca207ef3ea95c875913aaa336b1ad93ad7659
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/abyss/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a2a8d54ca615e46524634421d013b7f23bc81c3f
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/arena_candela_city/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a0ffa718d011bed07d6b6889f91100e566921235
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/battleisland/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/35bf7213ad85c24a22dfd9da66587c6442a1b011
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/black_forest/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c84ddc10fa9d8ddd854d4c773e7ff0799a1d9e80
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/candela_city/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a0ffa718d011bed07d6b6889f91100e566921235
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/cave/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/dce6ccc335043c09980b153f88ff7031fd8cc4db
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/cocoa_temple/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f5e203a8b1a356674745082cbeb99fbae0ec759b
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/cornfield_crossing/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a3a23214a3070ef41d2a3ff6af90f0deb7d9a447
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/endcutscene/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/831826697c18be01de7253652b6f5d3c9943c360
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/fortmagma/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7a61ef1745f050ea598a2fb7d98d01428fcdaf20
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/fortmagma/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/85db90dd0456896a60608fe7d3e880f7c3b2adae
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/gpwin/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/473540a02429f7ac94d90626aca23855a849c1d3
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/gran_paradiso_island/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f9eabeba0092800f2140737c7a3cd9ec3348629b
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/hacienda/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/6c47901c75dd9f1ffd101f3eb28f3657b97fa43b
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/icy_soccer_field/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c18885797e82cf70f2fcaa87bb5f147546fd1069
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/introcutscene/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/3be05405070433c833f539cb9a11a18e514c04c3
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/introcutscene2/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/55a3bc5715721820f3e23313602c43397c5cf147
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/lasdunasarena/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/6f329ea9a9899fa338484221e2a45cecf13897b3
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/lasdunassoccer/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/6f329ea9a9899fa338484221e2a45cecf13897b3
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/lighthouse/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/39a0f65f266b401ba0eec8ff6933c110407cbbda
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/mines/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/4cd9190ef7cc9f1d27e16472c7c5f75af66f57d8
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/mines/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/5802fc24f58535374b4f9ce7efb8549c5e8530b5
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/minigolf/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1d8ba82121a837056f0f33e3fa127ab7777268f2
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/olivermath/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b96a1f831696b302e9837b91391e7ea9c06ca52b
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/overworld/licence2.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8ad97863fd24da454396af06227b65595c87cddb
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/overworld/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a651a9fb5e6cfeb772cb57b779fa6788bf12cc69
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/pumpkin_park/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/ca1a3b2b45235d932bbb3412dd1750d976d215b3
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/ravenbridge_mansion/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bd7985ae792a38d58b8a8316dd9313755892f363
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/sandtrack/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/483089ba439390cc32f6bd3b6f81dc8efd91551d
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/sandtrack/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f9df4b37e2d3866bd384644f4b58d5af32a27993
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/scotland/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/28afceece7c7c1b46b3cd29f35fe2950daf13eb6
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/snowmountain/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b4a4a584a47c7ea791325562f14c38a86ee55fd2
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/snowtuxpeak/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/df8e887e251dc7d2aebf2f10c1cfe22689b8af36
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/soccer_field/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/031af954cad02af7667548798e3edd50e51c4a3e
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/stadium/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/dfaa4937ee4125087b4d6a0aba1e94686171ac84
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/stk_enterprise/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8c5462e7b7df03926a95217de93366cc2b144dc1
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/volcano_island/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/55bb301f7f6b4819e325fcf75c07dbc1502fb7df
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/xr591/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/fb02d397368e5eff31f55477eeea1513c4222251
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/xr591/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7abbfd22b10dd7f520087fad46dea34b0deac959
 cp %{_builddir}/supertuxkart-1.1-src/data/tracks/zengarden/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a0e2a8311c34f3ff1795bbbcaab0aea280dc36b1
+cp %{_builddir}/supertuxkart-1.1-src/data/tracks/zengarden/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/d4d6b043cd4b1863444b6dd65c83445a4cfa367e
+cp %{_builddir}/supertuxkart-1.1-src/data/ttf/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/c71665ead582fff0a2d0ffc322851cc8a17edc87
 cp %{_builddir}/supertuxkart-1.1-src/lib/bullet/BulletLicense.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8d8f9fb057f8836636b30305da047c98df65a179
 cp %{_builddir}/supertuxkart-1.1-src/lib/bullet/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/ab7f5a074dba7b46b0dff5e54453eea3e35493b3
 cp %{_builddir}/supertuxkart-1.1-src/lib/enet/LICENSE %{buildroot}/usr/share/package-licenses/supertuxkart/6c93f839382b0b684116fe9816f99948f7ccf0d3
@@ -5297,65 +5396,161 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 /usr/share/package-licenses/supertuxkart/031af954cad02af7667548798e3edd50e51c4a3e
 /usr/share/package-licenses/supertuxkart/042c2d15bbb2ea50e91497a2efdecb91fb420fad
 /usr/share/package-licenses/supertuxkart/077b4fdb39e0b09e38afa2a03e1af228b35e7747
+/usr/share/package-licenses/supertuxkart/07dfcc4bf261d0c79c0083d78d065c61ec129a57
 /usr/share/package-licenses/supertuxkart/0b4db270bf26b549102b7d6f1d38fd42d9b33b97
 /usr/share/package-licenses/supertuxkart/0ca22faedb8ee495473a82c4d91452493b22ac9f
+/usr/share/package-licenses/supertuxkart/0e3b6002db46f468bca0aedae245131e27b5e5ed
 /usr/share/package-licenses/supertuxkart/0f3b9abc97c27cae8475cfe1a949a233438afd0e
+/usr/share/package-licenses/supertuxkart/1423ee48989b46b97d85c3213c4f3185133ce355
+/usr/share/package-licenses/supertuxkart/1464825c358451a42f6922ee4e1fd57460c73b22
+/usr/share/package-licenses/supertuxkart/15597b642bf43c326ce37b772cfdc99e0a796cc7
 /usr/share/package-licenses/supertuxkart/15909db3eefa32dd837ce5c643fad1f834fee327
+/usr/share/package-licenses/supertuxkart/16b714b546a6945084273b67bec2d34e6e72e733
+/usr/share/package-licenses/supertuxkart/178db69a5d44ea70fe32ed7fe7572283916b0aba
 /usr/share/package-licenses/supertuxkart/1d8ba82121a837056f0f33e3fa127ab7777268f2
+/usr/share/package-licenses/supertuxkart/1f970aad42fcfa8a07a2039c09ce6cee9ca66048
 /usr/share/package-licenses/supertuxkart/2039dac745986fb886c8be59107e8d3ee825b550
+/usr/share/package-licenses/supertuxkart/20b4681477d4dc4e5c04d1e86dcb93e183858baa
+/usr/share/package-licenses/supertuxkart/245abbe13592f75b05987689fda2785028d998e7
+/usr/share/package-licenses/supertuxkart/269464e2656d144c4b9d593d16e7f0f285134c79
 /usr/share/package-licenses/supertuxkart/28afceece7c7c1b46b3cd29f35fe2950daf13eb6
+/usr/share/package-licenses/supertuxkart/296c7b0fbfe1129b197d5a91fc701e828177fe87
 /usr/share/package-licenses/supertuxkart/2abb7823a8eb4109de457da184c1a9787731edc1
+/usr/share/package-licenses/supertuxkart/2c6d6d051f04f55afb85a4380fff77ab9297f95f
+/usr/share/package-licenses/supertuxkart/2c7064b614428db695736b29115cac0d2727b268
 /usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
 /usr/share/package-licenses/supertuxkart/2dbaf00f8ff1d45857457902bb040ea757c82100
 /usr/share/package-licenses/supertuxkart/35bf7213ad85c24a22dfd9da66587c6442a1b011
 /usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812
+/usr/share/package-licenses/supertuxkart/39a0f65f266b401ba0eec8ff6933c110407cbbda
+/usr/share/package-licenses/supertuxkart/3b67ebba7ed92cd2ed98fba152f459de5b1aca8e
 /usr/share/package-licenses/supertuxkart/3be05405070433c833f539cb9a11a18e514c04c3
 /usr/share/package-licenses/supertuxkart/3cba29011be2b9d59f6204d6fa0a386b1b2dbd90
+/usr/share/package-licenses/supertuxkart/3e9a096c379d0e6115fdcdc7a06cbb45b3ba1f9e
 /usr/share/package-licenses/supertuxkart/44909530424243e741856fda8df20179a3f5681f
+/usr/share/package-licenses/supertuxkart/473540a02429f7ac94d90626aca23855a849c1d3
 /usr/share/package-licenses/supertuxkart/483089ba439390cc32f6bd3b6f81dc8efd91551d
+/usr/share/package-licenses/supertuxkart/4ad3438658e60ac0fdc8bd358fdb77efe90964a3
 /usr/share/package-licenses/supertuxkart/4ccc86fd4fedca2b084d4bfb628fb81845e7c993
 /usr/share/package-licenses/supertuxkart/4cd9190ef7cc9f1d27e16472c7c5f75af66f57d8
 /usr/share/package-licenses/supertuxkart/4f0bc63cc3f7fda5975edb7adfb47b68d00e6e0b
 /usr/share/package-licenses/supertuxkart/55a3bc5715721820f3e23313602c43397c5cf147
 /usr/share/package-licenses/supertuxkart/55bb301f7f6b4819e325fcf75c07dbc1502fb7df
+/usr/share/package-licenses/supertuxkart/56e0f8c14d40f71cb248c74c67c62d48293eb785
+/usr/share/package-licenses/supertuxkart/5802fc24f58535374b4f9ce7efb8549c5e8530b5
+/usr/share/package-licenses/supertuxkart/593339db283b351b3acd91e7767f997d756b5075
 /usr/share/package-licenses/supertuxkart/594bf4a28dbe3e027d1053c0d1a6280f51a8ea5f
+/usr/share/package-licenses/supertuxkart/59b2d1887ee47e80ce9d4737e5bec5afed520817
 /usr/share/package-licenses/supertuxkart/5f52c76a690f170023d39a4e657a3a7b24306e98
+/usr/share/package-licenses/supertuxkart/65a7e992f22f0243fb295f7878cab5797573287c
+/usr/share/package-licenses/supertuxkart/66299097a265c8920635329ce0e0d2a17840f269
 /usr/share/package-licenses/supertuxkart/68078064e5fe9871542cd3f02469ff1350a2f4b4
 /usr/share/package-licenses/supertuxkart/6c47901c75dd9f1ffd101f3eb28f3657b97fa43b
 /usr/share/package-licenses/supertuxkart/6c93f839382b0b684116fe9816f99948f7ccf0d3
+/usr/share/package-licenses/supertuxkart/6e961ef5729aafa515d2074a9f90a0a60ea10f5d
+/usr/share/package-licenses/supertuxkart/6f329ea9a9899fa338484221e2a45cecf13897b3
 /usr/share/package-licenses/supertuxkart/6fc10119be1055a3b2f546feed8a54ffe3340cca
 /usr/share/package-licenses/supertuxkart/701dbe3a6300f36728fe1e0da2f35ff5ca547297
+/usr/share/package-licenses/supertuxkart/72116aed30b45f5224de82a3ed23877eec020bf3
+/usr/share/package-licenses/supertuxkart/722d812646bdf76d892105fefa94ccec88cc1d8b
+/usr/share/package-licenses/supertuxkart/72c61251b2855278f77bb3daa9f9915caffad37d
+/usr/share/package-licenses/supertuxkart/74dfca3c2b8f02c9640eecfef3ce34f7ece92f83
+/usr/share/package-licenses/supertuxkart/77cdddbd15760dab902de8008beafff16781fb7c
+/usr/share/package-licenses/supertuxkart/7a4501b3d2cb236eabab06dc02d5bc51b22dbdfe
 /usr/share/package-licenses/supertuxkart/7a61ef1745f050ea598a2fb7d98d01428fcdaf20
+/usr/share/package-licenses/supertuxkart/7abbfd22b10dd7f520087fad46dea34b0deac959
+/usr/share/package-licenses/supertuxkart/7b579e9be8f5377de1c3e58916ba5971c7d25bd7
+/usr/share/package-licenses/supertuxkart/7c1ad0055da8e4d31a7ed9b30a5d5e129f6e22d3
 /usr/share/package-licenses/supertuxkart/7ce90b58ebae63ad9a68de30663416dee084ab9b
+/usr/share/package-licenses/supertuxkart/7f1e73a45e26116b213b01d95a21f28cb6b92eee
 /usr/share/package-licenses/supertuxkart/80b6f4fcbc19d7431482cba012e86f587828c1ba
+/usr/share/package-licenses/supertuxkart/80e6f85aaf357b92dc8bd07a07d5918465341659
 /usr/share/package-licenses/supertuxkart/82f0d28bc723c5eecd62f5f51058d7bb7cfdcbb5
 /usr/share/package-licenses/supertuxkart/831826697c18be01de7253652b6f5d3c9943c360
+/usr/share/package-licenses/supertuxkart/83a8f00b9ae661bc656493f9b97318db3aa97c96
+/usr/share/package-licenses/supertuxkart/83cc906ca1085ebf6a8bb4bbaf5e893cf26cea39
+/usr/share/package-licenses/supertuxkart/85db90dd0456896a60608fe7d3e880f7c3b2adae
+/usr/share/package-licenses/supertuxkart/85e1b9bc8be9988b1092c7de6f1a190a2b1abe34
+/usr/share/package-licenses/supertuxkart/89593df1fd3cb9a4a60702db63c69d0e54c8e6dc
 /usr/share/package-licenses/supertuxkart/8ad97863fd24da454396af06227b65595c87cddb
 /usr/share/package-licenses/supertuxkart/8c5462e7b7df03926a95217de93366cc2b144dc1
 /usr/share/package-licenses/supertuxkart/8d8f9fb057f8836636b30305da047c98df65a179
+/usr/share/package-licenses/supertuxkart/8e5e5c3dd4cdb4a36d0875e891b39140262e1e64
+/usr/share/package-licenses/supertuxkart/8ff651097a54ae6377e19f38df2b1cf51c36ed55
+/usr/share/package-licenses/supertuxkart/90a8590c9e2138a52612507cfb934f184058d600
+/usr/share/package-licenses/supertuxkart/91792f2c9de768c1848db485aa6634b0f807052f
 /usr/share/package-licenses/supertuxkart/97b8284aa8384d431f7fb5d3f282cc5c40840a4f
+/usr/share/package-licenses/supertuxkart/9a92ff0ba4973d3e6567b5d7309df499d252210b
+/usr/share/package-licenses/supertuxkart/9c6bb3588d3b608d91f81751516b6c1f8bea2fe4
 /usr/share/package-licenses/supertuxkart/a0e2a8311c34f3ff1795bbbcaab0aea280dc36b1
 /usr/share/package-licenses/supertuxkart/a0ffa718d011bed07d6b6889f91100e566921235
+/usr/share/package-licenses/supertuxkart/a143acc04f0b0f75ccfc260397d7c6f5da0d0c7a
+/usr/share/package-licenses/supertuxkart/a2146d4717c90899d69ddeb48f18a4fbf76d040a
+/usr/share/package-licenses/supertuxkart/a2a8d54ca615e46524634421d013b7f23bc81c3f
+/usr/share/package-licenses/supertuxkart/a3a23214a3070ef41d2a3ff6af90f0deb7d9a447
+/usr/share/package-licenses/supertuxkart/a5545c1aebd21107808ad13b9c8ec85c2c42657a
+/usr/share/package-licenses/supertuxkart/a5e0e33d6865b16c1a25deab0caba7fdcfcc930f
+/usr/share/package-licenses/supertuxkart/a651a9fb5e6cfeb772cb57b779fa6788bf12cc69
+/usr/share/package-licenses/supertuxkart/a7537463f87fe3d16ca317c95b1a7fb96af1a4ec
+/usr/share/package-licenses/supertuxkart/a887d5d3e6d0c35bb4195c5e55821a831bfe43e6
 /usr/share/package-licenses/supertuxkart/aa4b9207aaff26bc16c562d6cd766a9eed49af1e
+/usr/share/package-licenses/supertuxkart/aa95640260a26f38077244eaebfb7b5dd44daf07
 /usr/share/package-licenses/supertuxkart/ab7f5a074dba7b46b0dff5e54453eea3e35493b3
 /usr/share/package-licenses/supertuxkart/adcb38b6a2a6effc10d97372b599f173014402e0
+/usr/share/package-licenses/supertuxkart/adeb4f5addab9b78317e0ac13df1e3720c95df03
+/usr/share/package-licenses/supertuxkart/af8f2ff38aa79ef68af9129d13e33247c298ee1a
+/usr/share/package-licenses/supertuxkart/b1109f7a7ca5e646be7ca4a63d916180cda05eb4
+/usr/share/package-licenses/supertuxkart/b18a818e667c47150e5330ad705c64fd7432f2c1
+/usr/share/package-licenses/supertuxkart/b2b637a1671937c5afb80cde5316f47dd0f9e7cd
 /usr/share/package-licenses/supertuxkart/b3021ed08412cdeb692f36472893b94448630e40
+/usr/share/package-licenses/supertuxkart/b4a4a584a47c7ea791325562f14c38a86ee55fd2
 /usr/share/package-licenses/supertuxkart/b771ac784abebda4ff2f5c61b236c314d46d0afa
 /usr/share/package-licenses/supertuxkart/b96a1f831696b302e9837b91391e7ea9c06ca52b
+/usr/share/package-licenses/supertuxkart/bae8d4cbe49a46e6a78dbad6fdb0bbd5389e9436
+/usr/share/package-licenses/supertuxkart/bb07a62df520c66b0de2dfc8f57c6dcf6afe917a
+/usr/share/package-licenses/supertuxkart/bc658d40140b19120f0564cd012ae1cbbc2cf26b
 /usr/share/package-licenses/supertuxkart/bcbd5fcde0d5d5a7a0e6729f024dec58d6f48777
+/usr/share/package-licenses/supertuxkart/bcd981d45049c0d86a33e0a52a6ae5d135051682
+/usr/share/package-licenses/supertuxkart/bd6b4474b32132bc2e55cb962a0d8af3f7781011
+/usr/share/package-licenses/supertuxkart/bd7985ae792a38d58b8a8316dd9313755892f363
+/usr/share/package-licenses/supertuxkart/c18885797e82cf70f2fcaa87bb5f147546fd1069
 /usr/share/package-licenses/supertuxkart/c31b6a7a74991d3873e7e39020e0a6d071bec098
+/usr/share/package-licenses/supertuxkart/c4d8dd7764f73c6c17930723cc9906117109d1b2
+/usr/share/package-licenses/supertuxkart/c51ede38608b2da3b5bdd855daf131bada85cfdb
+/usr/share/package-licenses/supertuxkart/c523113016e591a90e6c85bc9db5cade3a809059
+/usr/share/package-licenses/supertuxkart/c71665ead582fff0a2d0ffc322851cc8a17edc87
 /usr/share/package-licenses/supertuxkart/c7249bb6c96485e98c43a9a1850209f20801ee20
+/usr/share/package-licenses/supertuxkart/c7aca207ef3ea95c875913aaa336b1ad93ad7659
 /usr/share/package-licenses/supertuxkart/c84ddc10fa9d8ddd854d4c773e7ff0799a1d9e80
+/usr/share/package-licenses/supertuxkart/c9571d07b703892211d59af3498dae3348cfacb4
+/usr/share/package-licenses/supertuxkart/ca1a3b2b45235d932bbb3412dd1750d976d215b3
+/usr/share/package-licenses/supertuxkart/cad4882fc88a0e55cceb2947ea9513ec5e2c9915
 /usr/share/package-licenses/supertuxkart/caddaf5f34c201eb84855becf958892f7fa66149
+/usr/share/package-licenses/supertuxkart/cb5d691c7d8c7c9c20849860ee5c4efb5533a1a4
+/usr/share/package-licenses/supertuxkart/ccb28b1ca3b7f44b069644823bcfb36b1fa9d7db
+/usr/share/package-licenses/supertuxkart/cdb0fd4c4913c25a7c7488d3b7c8f001dd6b0cd2
 /usr/share/package-licenses/supertuxkart/d13e2e2c44e47b2f689d71ffb74d02652e39a41d
+/usr/share/package-licenses/supertuxkart/d1887225e390d479fd237f4df46f7a9a32fd1425
+/usr/share/package-licenses/supertuxkart/d4d6b043cd4b1863444b6dd65c83445a4cfa367e
 /usr/share/package-licenses/supertuxkart/d964dbe91cbf7511e4f1857db9e99fdaf6658055
+/usr/share/package-licenses/supertuxkart/da04899f6614a2acee6722311feb8e606adf457f
+/usr/share/package-licenses/supertuxkart/da5fcaa876d26454fd0c56a184aaca3d807af89e
 /usr/share/package-licenses/supertuxkart/dce6ccc335043c09980b153f88ff7031fd8cc4db
 /usr/share/package-licenses/supertuxkart/df8e887e251dc7d2aebf2f10c1cfe22689b8af36
 /usr/share/package-licenses/supertuxkart/dfaa4937ee4125087b4d6a0aba1e94686171ac84
+/usr/share/package-licenses/supertuxkart/e11bea7d7da8968c79a4a9202b7977f8aa6e68d9
 /usr/share/package-licenses/supertuxkart/e59800998086062b9a9ed0f39f1ea6a2ede32d37
+/usr/share/package-licenses/supertuxkart/e8dbd88393026cf1da9b2a220288fbfe25ec2688
+/usr/share/package-licenses/supertuxkart/e93baca9e360ab5721d38a98ae8bf8bec0026ff6
 /usr/share/package-licenses/supertuxkart/ee28d27a80cd161ed21a85aceb8303840c092e8a
 /usr/share/package-licenses/supertuxkart/f58800dbbc83890e5ba7c3d970e3f341e1f80cdd
 /usr/share/package-licenses/supertuxkart/f5c0ef431fe468174bdaf97ea0965305d2c68b7e
 /usr/share/package-licenses/supertuxkart/f5e203a8b1a356674745082cbeb99fbae0ec759b
 /usr/share/package-licenses/supertuxkart/f6b811ac82c13dab904fcff9abaee6dede22a65b
+/usr/share/package-licenses/supertuxkart/f7f7cd2e273ee923a561dace626e622456c91d79
+/usr/share/package-licenses/supertuxkart/f9df4b37e2d3866bd384644f4b58d5af32a27993
+/usr/share/package-licenses/supertuxkart/f9eabeba0092800f2140737c7a3cd9ec3348629b
+/usr/share/package-licenses/supertuxkart/fa18653740916391f4d365af7ea71616d02f72d2
+/usr/share/package-licenses/supertuxkart/fadf7bcd6b694fbe97a32fdc42ecc679cd842263
 /usr/share/package-licenses/supertuxkart/fb02d397368e5eff31f55477eeea1513c4222251
+/usr/share/package-licenses/supertuxkart/fef9cc4512f23ad92aaba882f9d4bf83b75f357e

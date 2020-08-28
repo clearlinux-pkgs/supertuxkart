@@ -1,12 +1,12 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
+curl-dev
+freetype-dev
+libXrandr-dev
 libjpeg-turbo-dev
+libogg-dev
+libvorbis-dev
 mesa-dev
 openal-soft-dev
-zlib-dev
-libvorbis-dev
 pulseaudio-dev
-freetype-dev
-libogg-dev
-curl-dev
-libXrandr-dev
+zlib-dev

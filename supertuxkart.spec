@@ -4,12 +4,12 @@
 #
 Name     : supertuxkart
 Version  : 1.2
-Release  : 15
+Release  : 16
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.2/SuperTuxKart-1.2-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.2/SuperTuxKart-1.2-src.tar.xz
 Summary  : squish DXT library
 Group    : Development/Tools
-License  : Apache-2.0 BSD-3-Clause BSL-1.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 IJG Libpng MIT OFL-1.1 Zlib bzip2-1.0.5
+License  : Apache-2.0 BSD-3-Clause BSL-1.0 CC-BY-3.0 CC-BY-SA-3.0 CC-BY-SA-4.0 GPL-2.0 GPL-3.0 IJG Libpng MIT OFL-1.1 Zlib bzip2-1.0.5
 Requires: supertuxkart-bin = %{version}-%{release}
 Requires: supertuxkart-data = %{version}-%{release}
 Requires: supertuxkart-lib = %{version}-%{release}
@@ -50,6 +50,7 @@ BuildRequires : pkgconfig(xrandr)
 BuildRequires : pulseaudio-dev
 BuildRequires : texlive
 BuildRequires : zlib-dev
+Patch1: 0001-Fix-compilation-with-latest-SDL.patch
 
 %description
 Bullet is a 3D Collision Detection and Rigid Body Dynamics Library for games and animation.
@@ -94,13 +95,14 @@ license components for the supertuxkart package.
 %prep
 %setup -q -n SuperTuxKart-1.2-src
 cd %{_builddir}/SuperTuxKart-1.2-src
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1598643428
+export SOURCE_DATE_EPOCH=1609654087
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -116,12 +118,11 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1598643428
+export SOURCE_DATE_EPOCH=1609654087
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
 cp %{_builddir}/'SuperTuxKart-1.2-src/data/ttf/SIL Open Font License.txt' %{buildroot}/usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812
 cp %{_builddir}/SuperTuxKart-1.2-src/COPYING %{buildroot}/usr/share/package-licenses/supertuxkart/e59800998086062b9a9ed0f39f1ea6a2ede32d37
-cp %{_builddir}/SuperTuxKart-1.2-src/data/gui/icons/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/017ad0eec4ffda75a60fd7ee79263ae5dec1463c
 cp %{_builddir}/SuperTuxKart-1.2-src/data/gui/icons/android/license.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f6b811ac82c13dab904fcff9abaee6dede22a65b
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/adiumy/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/74dfca3c2b8f02c9640eecfef3ce34f7ece92f83
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/amanda/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/20b4681477d4dc4e5c04d1e86dcb93e183858baa
@@ -129,12 +130,8 @@ cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/beastie/licenses.txt %{buildroot
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/emule/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c31b6a7a74991d3873e7e39020e0a6d071bec098
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/gavroche/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/b771ac784abebda4ff2f5c61b236c314d46d0afa
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/hexley/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/593339db283b351b3acd91e7767f997d756b5075
-cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/kiki/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/ccfe379daaaf9cb4184be7c7e2d2c623f3cb7357
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/konqi/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/5f52c76a690f170023d39a4e657a3a7b24306e98
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/konqi/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/15597b642bf43c326ce37b772cfdc99e0a796cc7
-cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/nolok/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/245abbe13592f75b05987689fda2785028d998e7
-cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/pidgin/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/18c9b15f6019302826cf9986781239b5da275c6d
-cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/puffy/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1be852e0a4e8f8af8fa4d03559f0a739ec43900f
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/sara_the_racer/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c7249bb6c96485e98c43a9a1850209f20801ee20
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/sara_the_wizard/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bd6b4474b32132bc2e55cb962a0d8af3f7781011
 cp %{_builddir}/SuperTuxKart-1.2-src/data/karts/suzanne/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/8e5e5c3dd4cdb4a36d0875e891b39140262e1e64
@@ -179,7 +176,6 @@ cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_autumnTree_d/licenses.t
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_autumnTree_e/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/3e9a096c379d0e6115fdcdc7a06cbb45b3ba1f9e
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_autumnTree_f/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1423ee48989b46b97d85c3213c4f3185133ce355
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_autumnTree_g/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/1423ee48989b46b97d85c3213c4f3185133ce355
-cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_autumnWillow_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/0f50cb9446ccf9ee6b6a83709cdc70a99b102d79
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_aztecFountain_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/9a92ff0ba4973d3e6567b5d7309df499d252210b
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_aztecHouse_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/4ad3438658e60ac0fdc8bd358fdb77efe90964a3
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_aztecHouse_b/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/bae8d4cbe49a46e6a78dbad6fdb0bbd5389e9436
@@ -196,6 +192,7 @@ cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_bugLamp_a/licenses.txt 
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_butterfly_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7f1e73a45e26116b213b01d95a21f28cb6b92eee
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_carousel_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a143acc04f0b0f75ccfc260397d7c6f5da0d0c7a
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_computer_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a5e0e33d6865b16c1a25deab0caba7fdcfcc930f
+cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_deadBranch_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/d796f872bd13a8223538e1add0f50a96c27edb5a
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_ferryWheels_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/a5545c1aebd21107808ad13b9c8ec85c2c42657a
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_industrialLamp_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/269464e2656d144c4b9d593d16e7f0f285134c79
 cp %{_builddir}/SuperTuxKart-1.2-src/data/library/stklib_jackOLantern_a/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/7b579e9be8f5377de1c3e58916ba5971c7d25bd7
@@ -220,7 +217,6 @@ cp %{_builddir}/SuperTuxKart-1.2-src/data/licenses.txt %{buildroot}/usr/share/pa
 cp %{_builddir}/SuperTuxKart-1.2-src/data/models/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/c9571d07b703892211d59af3498dae3348cfacb4
 cp %{_builddir}/SuperTuxKart-1.2-src/data/music/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/f7f7cd2e273ee923a561dace626e622456c91d79
 cp %{_builddir}/SuperTuxKart-1.2-src/data/sfx/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/178db69a5d44ea70fe32ed7fe7572283916b0aba
-cp %{_builddir}/SuperTuxKart-1.2-src/data/skins/cartoon/licenses.txt %{buildroot}/usr/share/package-licenses/supertuxkart/cff6a6814b6da6c21a49049278b7a2efad206934
 cp %{_builddir}/SuperTuxKart-1.2-src/data/skins/coal/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/caddaf5f34c201eb84855becf958892f7fa66149
 cp %{_builddir}/SuperTuxKart-1.2-src/data/skins/common/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2dbaf00f8ff1d45857457902bb040ea757c82100
 cp %{_builddir}/SuperTuxKart-1.2-src/data/skins/forest/License.txt %{buildroot}/usr/share/package-licenses/supertuxkart/2d7d3f120ce3c65964ddd55c3d32d5753bb1767d
@@ -5625,7 +5621,6 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/supertuxkart/017ad0eec4ffda75a60fd7ee79263ae5dec1463c
 /usr/share/package-licenses/supertuxkart/031af954cad02af7667548798e3edd50e51c4a3e
 /usr/share/package-licenses/supertuxkart/042c2d15bbb2ea50e91497a2efdecb91fb420fad
 /usr/share/package-licenses/supertuxkart/07dfcc4bf261d0c79c0083d78d065c61ec129a57
@@ -5633,20 +5628,16 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 /usr/share/package-licenses/supertuxkart/0ca22faedb8ee495473a82c4d91452493b22ac9f
 /usr/share/package-licenses/supertuxkart/0e3b6002db46f468bca0aedae245131e27b5e5ed
 /usr/share/package-licenses/supertuxkart/0f3b9abc97c27cae8475cfe1a949a233438afd0e
-/usr/share/package-licenses/supertuxkart/0f50cb9446ccf9ee6b6a83709cdc70a99b102d79
 /usr/share/package-licenses/supertuxkart/1423ee48989b46b97d85c3213c4f3185133ce355
 /usr/share/package-licenses/supertuxkart/1464825c358451a42f6922ee4e1fd57460c73b22
 /usr/share/package-licenses/supertuxkart/15597b642bf43c326ce37b772cfdc99e0a796cc7
 /usr/share/package-licenses/supertuxkart/15909db3eefa32dd837ce5c643fad1f834fee327
 /usr/share/package-licenses/supertuxkart/16b714b546a6945084273b67bec2d34e6e72e733
 /usr/share/package-licenses/supertuxkart/178db69a5d44ea70fe32ed7fe7572283916b0aba
-/usr/share/package-licenses/supertuxkart/18c9b15f6019302826cf9986781239b5da275c6d
-/usr/share/package-licenses/supertuxkart/1be852e0a4e8f8af8fa4d03559f0a739ec43900f
 /usr/share/package-licenses/supertuxkart/1d8ba82121a837056f0f33e3fa127ab7777268f2
 /usr/share/package-licenses/supertuxkart/1f970aad42fcfa8a07a2039c09ce6cee9ca66048
 /usr/share/package-licenses/supertuxkart/2039dac745986fb886c8be59107e8d3ee825b550
 /usr/share/package-licenses/supertuxkart/20b4681477d4dc4e5c04d1e86dcb93e183858baa
-/usr/share/package-licenses/supertuxkart/245abbe13592f75b05987689fda2785028d998e7
 /usr/share/package-licenses/supertuxkart/269464e2656d144c4b9d593d16e7f0f285134c79
 /usr/share/package-licenses/supertuxkart/28afceece7c7c1b46b3cd29f35fe2950daf13eb6
 /usr/share/package-licenses/supertuxkart/296c7b0fbfe1129b197d5a91fc701e828177fe87
@@ -5761,12 +5752,11 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 /usr/share/package-licenses/supertuxkart/cb5d691c7d8c7c9c20849860ee5c4efb5533a1a4
 /usr/share/package-licenses/supertuxkart/cbe86302ac5a925aa225bf7b7fc20a8efd1bd8d8
 /usr/share/package-licenses/supertuxkart/ccb28b1ca3b7f44b069644823bcfb36b1fa9d7db
-/usr/share/package-licenses/supertuxkart/ccfe379daaaf9cb4184be7c7e2d2c623f3cb7357
 /usr/share/package-licenses/supertuxkart/cdb0fd4c4913c25a7c7488d3b7c8f001dd6b0cd2
-/usr/share/package-licenses/supertuxkart/cff6a6814b6da6c21a49049278b7a2efad206934
 /usr/share/package-licenses/supertuxkart/d13e2e2c44e47b2f689d71ffb74d02652e39a41d
 /usr/share/package-licenses/supertuxkart/d1887225e390d479fd237f4df46f7a9a32fd1425
 /usr/share/package-licenses/supertuxkart/d4d6b043cd4b1863444b6dd65c83445a4cfa367e
+/usr/share/package-licenses/supertuxkart/d796f872bd13a8223538e1add0f50a96c27edb5a
 /usr/share/package-licenses/supertuxkart/d964dbe91cbf7511e4f1857db9e99fdaf6658055
 /usr/share/package-licenses/supertuxkart/da5fcaa876d26454fd0c56a184aaca3d807af89e
 /usr/share/package-licenses/supertuxkart/dce6ccc335043c09980b153f88ff7031fd8cc4db

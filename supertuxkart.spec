@@ -4,7 +4,7 @@
 #
 Name     : supertuxkart
 Version  : 1.3
-Release  : 18
+Release  : 19
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.3/SuperTuxKart-1.3-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.3/SuperTuxKart-1.3-src.tar.xz
 Summary  : squish DXT library
@@ -49,6 +49,7 @@ BuildRequires : pkgconfig(xrandr)
 BuildRequires : pulseaudio-dev
 BuildRequires : texlive
 BuildRequires : zlib-dev
+Patch1: 0001-tinygettext-library-should-be-static.patch
 
 %description
 Bullet is a 3D Collision Detection and Rigid Body Dynamics Library for games and animation.
@@ -93,13 +94,14 @@ license components for the supertuxkart package.
 %prep
 %setup -q -n SuperTuxKart-1.3-src
 cd %{_builddir}/SuperTuxKart-1.3-src
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1632961484
+export SOURCE_DATE_EPOCH=1632961849
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -115,7 +117,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1632961484
+export SOURCE_DATE_EPOCH=1632961849
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
 cp %{_builddir}/'SuperTuxKart-1.3-src/data/ttf/SIL Open Font License.txt' %{buildroot}/usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812

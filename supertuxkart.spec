@@ -4,7 +4,7 @@
 #
 Name     : supertuxkart
 Version  : 1.3
-Release  : 19
+Release  : 20
 URL      : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.3/SuperTuxKart-1.3-src.tar.xz
 Source0  : https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.3/SuperTuxKart-1.3-src.tar.xz
 Summary  : squish DXT library

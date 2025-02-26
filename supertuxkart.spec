@@ -7,7 +7,7 @@
 #
 Name     : supertuxkart
 Version  : 1.4
-Release  : 23
+Release  : 24
 URL      : https://github.com/supertuxkart/stk-code/releases/download/1.4/SuperTuxKart-1.4-src.tar.xz
 Source0  : https://github.com/supertuxkart/stk-code/releases/download/1.4/SuperTuxKart-1.4-src.tar.xz
 Summary  : Tools and libraries for Vulkan shader compilation
@@ -17,7 +17,6 @@ Requires: supertuxkart-bin = %{version}-%{release}
 Requires: supertuxkart-data = %{version}-%{release}
 Requires: supertuxkart-lib = %{version}-%{release}
 Requires: supertuxkart-license = %{version}-%{release}
-Requires: supertuxkart-plugins = %{version}-%{release}
 BuildRequires : SDL-dev
 BuildRequires : boost-dev
 BuildRequires : buildreq-cmake
@@ -135,14 +134,6 @@ Group: Default
 license components for the supertuxkart package.
 
 
-%package plugins
-Summary: plugins components for the supertuxkart package.
-Group: Default
-
-%description plugins
-plugins components for the supertuxkart package.
-
-
 %prep
 %setup -q -n SuperTuxKart-1.4-src
 cd %{_builddir}/SuperTuxKart-1.4-src
@@ -153,7 +144,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1740599450
+export SOURCE_DATE_EPOCH=1740600867
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -190,7 +181,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1740599450
+export SOURCE_DATE_EPOCH=1740600867
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/supertuxkart
 cp %{_builddir}/'SuperTuxKart-%{version}-src/data/ttf/SIL Open Font License.txt' %{buildroot}/usr/share/package-licenses/supertuxkart/39457e73e9752fc351ed7be0ac3b5a8f8313b812 || :
@@ -380,6 +371,7 @@ popd
 mkdir -p %{buildroot}/usr/lib64
 cp clr-build/lib/libsquish/libsquish.so.* %{buildroot}/usr/lib64
 cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr/lib64
+mv %{buildroot}/usr/lib/lib* %{buildroot}/usr/lib64/
 ## install_append end
 
 %files
@@ -5918,7 +5910,7 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 /usr/lib/cmake/Angelscript/AngelscriptConfigVersion.cmake
 /usr/lib/cmake/Angelscript/AngelscriptTargets-relwithdebinfo.cmake
 /usr/lib/cmake/Angelscript/AngelscriptTargets.cmake
-/usr/lib/libangelscript.so
+/usr/lib64/libangelscript.so
 
 %files lib
 %defattr(-,root,root,-)
@@ -6098,7 +6090,3 @@ cp clr-build/lib/angelscript/projects/cmake/libangelscript.so.* %{buildroot}/usr
 /usr/share/package-licenses/supertuxkart/fadf7bcd6b694fbe97a32fdc42ecc679cd842263
 /usr/share/package-licenses/supertuxkart/fb02d397368e5eff31f55477eeea1513c4222251
 /usr/share/package-licenses/supertuxkart/fef9cc4512f23ad92aaba882f9d4bf83b75f357e
-
-%files plugins
-%defattr(-,root,root,-)
-/usr/lib/libangelscript.so.2.35.1

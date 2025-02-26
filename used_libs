@@ -10,6 +10,7 @@ libm.so.6
 libopenal.so.1
 libpng16.so.16
 libresolv.so.2
+libshaderc_shared.so.1
 libsqlite3.so.0
 libstdc++.so.6
 libvorbisfile.so.3
